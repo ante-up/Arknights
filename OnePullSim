@@ -1,0 +1,91 @@
+public class OnePullOdds
+{
+    public static void main(String[] args)
+    {
+        int numberOfPulls = 1000000;
+        int locationSum = 0;
+        //simulates for the average rate of a 6 star including pity
+        double avgSixStarRate = sixStarRateSim();
+        int totalFiveStarPulled = 0;
+        int totalSixStarPulled = 0;
+
+        int[] pullSim;
+        for (int i = 0; i < numberOfPulls; i++)
+        {
+            pullSim = GuaranteedPullSim(avgSixStarRate);
+            totalFiveStarPulled += pullSim[0];
+            totalSixStarPulled += pullSim[1];
+            locationSum += pullSim[2];
+        }
+        double avgLocation = (double) locationSum/numberOfPulls;
+        System.out.println("Number of guarantee sessions simulated (1 pull at a time): " + numberOfPulls);
+        System.out.println(avgLocation + " pulls on avg before 5* or above");
+        System.out.println((double) totalFiveStarPulled/(totalFiveStarPulled+totalSixStarPulled)*100 + " (% chance guaranteed is a 5*)");
+        System.out.println((double) totalSixStarPulled/(totalFiveStarPulled+totalSixStarPulled)*100 + " (% chance guaranteed is a 6*)");
+    }
+
+    public static int[] GuaranteedPullSim(double sixStarAvgRate)
+    {
+        //array with 5*s and 6*s pulled
+        int[] rareUnit = new int[3];
+
+        //no of rare units per 10 pull
+        int fiveCounter = 0;
+        int sixCounter = 0;
+        int endLocation = 0;
+        //10 pulls
+        for (int j = 0; j < 10; j++)
+        {
+            double valueCheck = Math.random();
+            if ((valueCheck)<.08)
+            {
+                endLocation = j+1;
+                fiveCounter++;
+                break;
+            }
+            else if ((valueCheck>=1-sixStarAvgRate))
+            {
+                endLocation = j+1;
+                sixCounter++;
+                break;
+            }
+            if (j==9 && fiveCounter==0 && sixCounter == 0)
+            {
+                endLocation = 10;
+                fiveCounter++;
+            }
+        }
+        rareUnit[0]= fiveCounter;
+        rareUnit[1]= sixCounter;
+        rareUnit[2]= endLocation;
+        return rareUnit;
+    }
+    public static double sixStarRateSim()
+    {
+        int sixCounter = 0;
+        int pityCounter = 0;
+        int iterationNo = 500000;
+        for (int i=0; i<iterationNo; i++)
+        {
+            double valueCheck = Math.random();
+            pityCounter++;
+            if (pityCounter>=50) {
+                if (valueCheck <= (.02 + .02*(pityCounter-49)))
+                {
+                    sixCounter++;
+                    pityCounter = 0;
+                }
+            }
+            else
+            {
+                if (valueCheck <= .02)
+                {
+                    sixCounter++;
+                    pityCounter=0;
+                }
+            }
+        }
+        double sixStarRate = (double) sixCounter/iterationNo;
+        return sixStarRate;
+    }
+}
