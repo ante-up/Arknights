@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class Guaranteed
+public class TenPullOdds
 {
     public static void main(String[] args)
     {
@@ -29,15 +29,16 @@ public class Guaranteed
         //10 pulls
         for (int j = 0; j < 10; j++)
         {
-            if (((int) 100*Math.random())<8)
+            double valueCheck = 100*Math.random();
+            if ((valueCheck)<8)
             {
                 fiveCounter++;
             }
-            else if (((int) 100*Math.random()>=100-sixStarAvgRate))
+            else if ((valueCheck>=100-sixStarAvgRate))
             {
                 sixCounter++;
             }
-            else if (j==9 && fiveCounter==0 && sixCounter == 0)
+            if (j==9 && fiveCounter==0 && sixCounter == 0)
             {
                 fiveCounter++;
             }
@@ -71,6 +72,8 @@ public class Guaranteed
             }
         }
         double sixStarRate = (double) sixCounter/(iterationNo/100);
+        System.out.println(sixCounter + " six counter");
+        System.out.println(sixStarRate + "% six star rate");
         return sixStarRate;
     }
 }
