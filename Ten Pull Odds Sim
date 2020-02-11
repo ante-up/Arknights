@@ -33,11 +33,11 @@ public class Guaranteed
             {
                 fiveCounter++;
             }
-            if (((int) 100*Math.random()>=100-sixStarAvgRate))
+            else if (((int) 100*Math.random()>=100-sixStarAvgRate))
             {
                 sixCounter++;
             }
-            if (j==9 && fiveCounter==0 && sixCounter == 0)
+            else if (j==9 && fiveCounter==0 && sixCounter == 0)
             {
                 fiveCounter++;
             }
