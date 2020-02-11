@@ -1,5 +1,3 @@
-import javax.swing.*;
-
 public class TenPullOdds
 {
     public static void main(String[] args)
@@ -14,8 +12,9 @@ public class TenPullOdds
             totalFiveStarPulled += TenPullSim(avgSixStarRate)[0];
             totalSixStarPulled += TenPullSim(avgSixStarRate)[1];
         }
-        System.out.println((double) totalFiveStarPulled/numberOfPulls + " five star units summoned per 10 pull");
-        System.out.println((double) totalSixStarPulled/numberOfPulls + " six star units summoned per 10 pull");
+        System.out.println("Number of guarantee sessions simulated (10 pulls at a time): " + numberOfPulls);
+        System.out.println((double) totalFiveStarPulled/numberOfPulls + " five star units summoned per 10 pull on guaranteed");
+        System.out.println((double) totalSixStarPulled/numberOfPulls + " six star units summoned per 10 pull on guaranteed");
     }
     public static int[] TenPullSim(double sixStarAvgRate)
     {
@@ -29,12 +28,12 @@ public class TenPullOdds
         //10 pulls
         for (int j = 0; j < 10; j++)
         {
-            double valueCheck = 100*Math.random();
-            if ((valueCheck)<8)
+            double valueCheck = Math.random();
+            if ((valueCheck)<.08)
             {
                 fiveCounter++;
             }
-            else if ((valueCheck>=100-sixStarAvgRate))
+            else if ((valueCheck>=1-sixStarAvgRate))
             {
                 sixCounter++;
             }
@@ -54,9 +53,10 @@ public class TenPullOdds
         int iterationNo = 500000;
         for (int i=0; i<iterationNo; i++)
         {
+            double valueCheck = Math.random();
             pityCounter++;
             if (pityCounter>=50) {
-                if ((int) 100*Math.random() <= (2 + 2*(pityCounter-49)))
+                if (valueCheck <= (.02 + .02*(pityCounter-49)))
                 {
                     sixCounter++;
                     pityCounter = 0;
@@ -64,16 +64,14 @@ public class TenPullOdds
             }
             else
             {
-                if ((int) 100*Math.random() <= 2 )
+                if (valueCheck <= .02)
                 {
                     sixCounter++;
                     pityCounter=0;
                 }
             }
         }
-        double sixStarRate = (double) sixCounter/(iterationNo/100);
-        System.out.println(sixCounter + " six counter");
-        System.out.println(sixStarRate + "% six star rate");
+        double sixStarRate = (double) sixCounter/iterationNo;
         return sixStarRate;
     }
 }
